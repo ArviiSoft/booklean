@@ -1,0 +1,176 @@
+{
+  "themes": [
+    {
+      "id": "dark",
+      "name": "Gece",
+      "mode": "dark",
+      "bg": "#0f0d0c",
+      "sidebar": "#131110",
+      "surface": "#1b1816",
+      "border": "#35302b",
+      "text": "#f4efe9",
+      "muted": "#bcb2a9",
+      "accent": "#c5b4e6",
+      "paper": "#0f0d0c"
+    },
+    {
+      "id": "sepia",
+      "name": "Kâğıt",
+      "mode": "light",
+      "bg": "#eee6d6",
+      "sidebar": "#e6dece",
+      "surface": "#f4ecdc",
+      "border": "#d8ccb7",
+      "text": "#4c4337",
+      "muted": "#71614e",
+      "accent": "#876646",
+      "paper": "#f5eddd"
+    },
+    {
+      "id": "light",
+      "name": "Gündüz",
+      "mode": "light",
+      "bg": "#f7f7f5",
+      "sidebar": "#efefec",
+      "surface": "#ffffff",
+      "border": "#dcdcd8",
+      "text": "#292a2c",
+      "muted": "#62636a",
+      "accent": "#80629d",
+      "paper": "#fafaf8"
+    },
+    {
+      "id": "midnight",
+      "name": "Gece mavisi",
+      "mode": "dark",
+      "bg": "#101725",
+      "sidebar": "#141e2e",
+      "surface": "#1a273b",
+      "border": "#344259",
+      "text": "#edf2fc",
+      "muted": "#acbcd6",
+      "accent": "#a6bffa",
+      "paper": "#121b2b"
+    },
+    {
+      "id": "forest",
+      "name": "Orman",
+      "mode": "dark",
+      "bg": "#111e19",
+      "sidebar": "#15271f",
+      "surface": "#1d3027",
+      "border": "#3a5143",
+      "text": "#e9f1e8",
+      "muted": "#b0c4b2",
+      "accent": "#b5d19b",
+      "paper": "#13221b"
+    },
+    {
+      "id": "ocean",
+      "name": "Okyanus",
+      "mode": "dark",
+      "bg": "#0d2028",
+      "sidebar": "#122a33",
+      "surface": "#183640",
+      "border": "#355560",
+      "text": "#e8f5f6",
+      "muted": "#a6c8d0",
+      "accent": "#92d6d8",
+      "paper": "#102630"
+    },
+    {
+      "id": "plum",
+      "name": "Mürdüm",
+      "mode": "dark",
+      "bg": "#231924",
+      "sidebar": "#2c202e",
+      "surface": "#362839",
+      "border": "#58415c",
+      "text": "#f5eaf5",
+      "muted": "#cdb6cc",
+      "accent": "#e1b5d8",
+      "paper": "#281c2a"
+    },
+    {
+      "id": "graphite",
+      "name": "Grafit",
+      "mode": "dark",
+      "bg": "#181a1c",
+      "sidebar": "#202326",
+      "surface": "#2a2e32",
+      "border": "#444a50",
+      "text": "#f0f2f4",
+      "muted": "#b8bfc7",
+      "accent": "#c5ced8",
+      "paper": "#1d2023"
+    },
+    {
+      "id": "rose",
+      "name": "Gül kurusu",
+      "mode": "light",
+      "bg": "#f3e8e7",
+      "sidebar": "#ecdddc",
+      "surface": "#fcf4f2",
+      "border": "#d9bfbe",
+      "text": "#503438",
+      "muted": "#815e62",
+      "accent": "#9a4d64",
+      "paper": "#fff7f4"
+    },
+    {
+      "id": "sand",
+      "name": "Kum",
+      "mode": "light",
+      "bg": "#eee8dc",
+      "sidebar": "#e5dccb",
+      "surface": "#f8f3e9",
+      "border": "#cfc1a9",
+      "text": "#463d2d",
+      "muted": "#74664e",
+      "accent": "#85602c",
+      "paper": "#faf6ed"
+    },
+    {
+      "id": "mist",
+      "name": "Sis",
+      "mode": "light",
+      "bg": "#e9eff0",
+      "sidebar": "#dce6e8",
+      "surface": "#f4f8f8",
+      "border": "#becfd2",
+      "text": "#263f46",
+      "muted": "#526f77",
+      "accent": "#386f7c",
+      "paper": "#f7fbfb"
+    }
+  ],
+  "motifs": [
+    { "id": "orbit", "name": "Yörünge", "description": "Kesişen halkalar" },
+    { "id": "arch", "name": "Kemer", "description": "Klasik bir geçit" },
+    { "id": "lines", "name": "Çizgiler", "description": "Geometrik ritim" },
+    { "id": "sun", "name": "Güneş", "description": "Yeni başlangıçlar" },
+    { "id": "moon", "name": "Hilal", "description": "Gecenin sessizliği" },
+    { "id": "mountains", "name": "Dağlar", "description": "Uzak ufuklar" },
+    {
+      "id": "waves",
+      "name": "Dalgalar",
+      "description": "Akıp giden hikâyeler"
+    },
+    { "id": "botanical", "name": "Yaprak", "description": "Doğadan bir iz" },
+    { "id": "diamond", "name": "Kristal", "description": "Keskin ve zarif" },
+    { "id": "compass", "name": "Pusula", "description": "Keşfe çıkanlar için" },
+    {
+      "id": "stars",
+      "name": "Takımyıldız",
+      "description": "Gökyüzündeki bağlar"
+    },
+    { "id": "feather", "name": "Tüy", "description": "Yazının hafifliği" },
+    { "id": "hourglass", "name": "Kum saati", "description": "Zamanın izinde" },
+    { "id": "deco", "name": "Art Déco", "description": "Zamansız simetri" },
+    {
+      "id": "labyrinth",
+      "name": "Labirent",
+      "description": "Gizeme açılan yollar"
+    }
+  ]
+}

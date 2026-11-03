@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Kullanım ve destek
+    url: https://github.com/ArviiSoft/booklean/blob/main/.github/SUPPORT.md
+    about: Kurulum, kayıt, yedek ve dosya aktarımı için başvuru rehberi.
+  - name: Güvenlik bildirimi
+    url: https://github.com/ArviiSoft/booklean/blob/main/.github/SECURITY.md
+    about: Güvenlik açıkları için izlenecek bildirim yolu.

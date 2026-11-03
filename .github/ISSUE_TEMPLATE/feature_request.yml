@@ -1,0 +1,23 @@
+name: Özellik önerisi
+description: Yazma deneyimini geliştirecek bir fikir paylaşın.
+title: "[Öneri] "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Hangi ihtiyacı karşılıyor?
+      description: Yazarken karşılaştığınız durumu veya zorlandığınız işi anlatın.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Nasıl çalışmasını istersiniz?
+      description: Kısa bir kullanım örneği verin; varsa çizim veya örnek ekleyin.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Mevcut yöntemler ve alternatifler
+      description: Bu işi şu anda nasıl yapıyorsunuz?

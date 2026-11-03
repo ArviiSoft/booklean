@@ -1,0 +1,60 @@
+name: Windows Portable
+
+# Actions ekranından seçilen dal için EXE üretir; release yayımlamaz.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portable-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  portable:
+    name: Windows x64 · Portable EXE
+    runs-on: windows-latest
+    timeout-minutes: 30
+    env:
+      CSC_IDENTITY_AUTO_DISCOVERY: "false"
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Kaynak kodu al
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Node.js 22 kur
+        uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Bağımlılıkları kur
+        run: npm ci --no-audit --no-fund
+
+      - name: Portable EXE oluştur
+        run: npm run dist
+
+      - name: SHA-256 dosyasını oluştur
+        run: |
+          $packages = @(Get-ChildItem -LiteralPath release -Filter 'Booklean-*-portable.exe' -File)
+          if ($packages.Count -ne 1) { throw 'Tek bir portable EXE bekleniyordu.' }
+          $package = $packages[0]
+          $digest = (Get-FileHash -LiteralPath $package.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$digest  $($package.Name)" | Set-Content -LiteralPath 'release/SHA256SUMS.txt' -Encoding utf8NoBOM
+
+      - name: Portable paketi sakla
+        uses: actions/upload-artifact@v7
+        with:
+          name: Booklean-Windows-x64-${{ github.run_id }}
+          path: |
+            release/Booklean-*-portable.exe
+            release/SHA256SUMS.txt
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 14
+

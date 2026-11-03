@@ -1,0 +1,44 @@
+name: Hata bildirimi
+description: Booklean'de beklenmeyen bir davranışı bildirin.
+title: "[Hata] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Önce mevcut konulara göz atın. Gerçek kitaplığınızı, yedeklerinizi veya kişisel metinlerinizi eklemeyin; mümkünse boş bir örnek kitapla gösterin.
+        Güvenlik açıkları için .github/SECURITY.md belgesindeki yolu kullanın.
+  - type: input
+    id: version
+    attributes:
+      label: Booklean sürümü
+      description: Ayarlar penceresinde görünen sürüm veya geliştirme yapısının commit kimliği.
+      placeholder: "Ör. portable sürüm / geliştirme yapısı"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Windows ve çalıştırma biçimi
+      placeholder: "Windows 11, portable EXE; ekran ölçeği %125"
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Tekrarlama adımları
+      placeholder: |
+        1. Yeni bir kitap oluşturun.
+        2. ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Beklenen ve gerçekleşen davranış
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: Hata mesajı veya ekran görüntüsü
+      description: Kişisel dosya yollarını ve kitap içeriklerini gizleyin. Dosya aktarımı sorunuysa dosya türünü ve yaklaşık boyutunu belirtin.

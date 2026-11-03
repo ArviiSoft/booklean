@@ -1,0 +1,62 @@
+[
+  {
+    "id": "Georgia",
+    "name": "Georgia",
+    "description": "Kitap hissi, uzun metinlerde rahat okuma"
+  },
+  {
+    "id": "Palatino Linotype",
+    "name": "Palatino",
+    "description": "Zarif ve geniş, klasik bir sayfa"
+  },
+  {
+    "id": "Segoe UI",
+    "name": "Segoe UI",
+    "description": "Serifsiz, sade ve net"
+  },
+  {
+    "id": "Courier New",
+    "name": "Daktilo",
+    "description": "Courier New, eski bir daktilonun ritmi"
+  },
+  {
+    "id": "Cambria",
+    "name": "Cambria",
+    "description": "Dengeli harfler, güçlü bir metin"
+  },
+  {
+    "id": "Constantia",
+    "name": "Constantia",
+    "description": "Yumuşak çizgiler, akıcı okuma"
+  },
+  {
+    "id": "Times New Roman",
+    "name": "Times New Roman",
+    "description": "Klasik roman ve gazete karakteri"
+  },
+  {
+    "id": "Arial",
+    "name": "Arial",
+    "description": "Yalın ve tanıdık, her metne uygun"
+  },
+  {
+    "id": "Verdana",
+    "name": "Verdana",
+    "description": "Geniş harfler, ekranda kolay okuma"
+  },
+  {
+    "id": "Tahoma",
+    "name": "Tahoma",
+    "description": "Düzenli ve kompakt, belirgin harfler"
+  },
+  {
+    "id": "Trebuchet MS",
+    "name": "Trebuchet",
+    "description": "Canlı ve açık, çağdaş bir görünüm"
+  },
+  {
+    "id": "Consolas",
+    "name": "Consolas",
+    "description": "Sabit aralıklı, modern daktilo"
+  }
+]
