@@ -36,6 +36,8 @@ export default function App() {
     return () => query.removeEventListener("change", change);
   }, []);
   const libraryRef = useRef<Library | null>(null);
+  const savedLibrary = useRef<Library | null>(null);
+  const saving = useRef<Promise<void> | null>(null);
   const [dataPath, setDataPath] = useState("");
   useEffect(() => {
     if (
@@ -67,21 +69,33 @@ export default function App() {
     const prev = libraryRef.current;
     if (!prev) return;
     const next = fn(prev);
+    if (next === prev) return;
     libraryRef.current = next;
     setLibrary(next);
     setSaveState("pending");
   }, []);
-  const save = useCallback(async () => {
-    const data = libraryRef.current;
-    if (!data) return;
-    setSaveState("saving");
-    try {
-      await window.booklean.save(data);
-      if (libraryRef.current === data) setSaveState("saved");
-    } catch (e) {
-      setSaveState("error");
-      throw e;
-    }
+  const save = useCallback(() => {
+    if (saving.current) return saving.current;
+    saving.current = (async () => {
+      try {
+        while (
+          libraryRef.current &&
+          libraryRef.current !== savedLibrary.current
+        ) {
+          const data = libraryRef.current;
+          setSaveState("saving");
+          await window.booklean.save(data);
+          savedLibrary.current = data;
+        }
+        setSaveState("saved");
+      } catch (e) {
+        setSaveState("error");
+        throw e;
+      }
+    })().finally(() => {
+      saving.current = null;
+    });
+    return saving.current;
   }, []);
   const load = useCallback(async () => {
     try {
@@ -162,8 +176,13 @@ export default function App() {
     update((l) => {
       const current = l.books.find((b) => b.id === bookId);
       if (!current) return l;
-      const changed = { ...fn(current), updatedAt: now() };
-      const added = Math.max(0, bookWords(changed) - bookWords(current));
+      const next = fn(current);
+      if (next === current) return l;
+      const changed = { ...next, updatedAt: now() };
+      const added =
+        changed.chapters === current.chapters
+          ? 0
+          : Math.max(0, bookWords(changed) - bookWords(current));
       return {
         ...l,
         books: l.books.map((b) => (b.id === bookId ? changed : b)),

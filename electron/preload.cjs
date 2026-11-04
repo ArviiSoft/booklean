@@ -18,6 +18,7 @@ contextBridge.exposeInMainWorld("booklean", {
   listBackups: () => ipcRenderer.invoke("backup:list"),
   createBackup: (library) => ipcRenderer.invoke("backup:create", library),
   readBackup: (name) => ipcRenderer.invoke("backup:read", name),
+  deleteBackup: (name) => ipcRenderer.invoke("backup:delete", name),
   minimize: () => ipcRenderer.send("window:minimize"),
   maximize: () => ipcRenderer.send("window:maximize"),
   close: () => ipcRenderer.send("window:close"),

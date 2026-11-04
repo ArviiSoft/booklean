@@ -107,6 +107,11 @@ export default function EditorToolbar({
       doc: editor.state.doc,
       marks: editor.state.storedMarks,
     }),
+    equalityFn: (a, b) =>
+      b !== null &&
+      a.selection === b.selection &&
+      a.doc === b.doc &&
+      a.marks === b.marks,
   });
   const [menu, setMenu] = useState<{ key: Menu; anchor: HTMLElement } | null>(
     null,

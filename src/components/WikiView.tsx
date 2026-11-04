@@ -45,6 +45,28 @@ const icons = [
   MapPin,
   Sparkles,
 ];
+const searchTextCache = new WeakMap<WikiEntry, string>();
+function searchText(entry: WikiEntry) {
+  const cached = searchTextCache.get(entry);
+  if (cached !== undefined) return cached;
+  const text = [
+    entry.title,
+    entry.summary,
+    entry.subtype,
+    entry.group,
+    ...entry.tags,
+    ...entry.attributes.map((a) => a.value),
+    ...entry.sections
+      .filter((s) => s.kind !== "image")
+      .map(
+        (s) => s.title + " " + plain(s.content) + " " + s.rows.flat().join(" "),
+      ),
+  ]
+    .join(" ")
+    .toLocaleLowerCase("tr");
+  searchTextCache.set(entry, text);
+  return text;
+}
 export default function WikiView({
   book,
   onUpdate,
@@ -57,6 +79,7 @@ export default function WikiView({
   const entries = book.wiki || [];
   const [category, setCategory] = useState<WikiCategory | "all">("all");
   const [query, setQuery] = useState("");
+  const needle = query.toLocaleLowerCase("tr");
   const [group, setGroup] = useState("");
   const [tag, setTag] = useState("");
   const [status, setStatus] = useState("");
@@ -76,27 +99,7 @@ export default function WikiView({
         (!tag || e.tags.includes(tag)) &&
         (!status || e.status === status) &&
         (!favorites || e.favorite) &&
-        [
-          e.title,
-          e.summary,
-          e.subtype,
-          e.group,
-          ...e.tags,
-          ...e.attributes.map((a) => a.value),
-          ...e.sections
-            .filter((s) => s.kind !== "image")
-            .map(
-              (s) =>
-                s.title +
-                " " +
-                plain(s.content) +
-                " " +
-                s.rows.flat().join(" "),
-            ),
-        ]
-          .join(" ")
-          .toLocaleLowerCase("tr")
-          .includes(query.toLocaleLowerCase("tr")),
+        (!needle || searchText(e).includes(needle)),
     )
     .sort((a, b) =>
       sort === "name"

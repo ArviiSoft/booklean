@@ -34,7 +34,7 @@ import {
   Timer,
 } from "lucide-react";
 import type { Book, Chapter, Character, Library } from "../types";
-import { words, fmt, newChapter, now, uid } from "../model";
+import { chapterWords, fmt, newChapter, now, uid } from "../model";
 import WritingCanvas from "./WritingCanvas";
 import { Modal, Field } from "./UI";
 import Popover from "./Popover";
@@ -245,7 +245,7 @@ export default function EditorView({
         </div>
         <div className="editor-actions" hidden={workspace !== "write"}>
           <span className="header-word-count">
-            {fmt(words(chapter.html))} kelime
+            {fmt(chapterWords(chapter))} kelime
           </span>
           <span
             className={`save-state ${saveState === "error" ? "error" : ""}`}
@@ -352,7 +352,7 @@ export default function EditorView({
                     <div>
                       <strong>{c.title || "Adsız bölüm"}</strong>
                       <span>
-                        {fmt(words(c.html))} kelime{" "}
+                        {fmt(chapterWords(c))} kelime{" "}
                         {c.status === "done" && <CheckCheck size={12} />}
                       </span>
                     </div>

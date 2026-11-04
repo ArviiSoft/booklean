@@ -10,8 +10,18 @@ const {
   normalizeWorld,
 } = require("./world.cjs");
 const MAX_SIZE = 150 * 1024 * 1024;
+const htmlCache = new Map();
+const MAX_HTML_CACHE_CHARS = 8 * 1024 * 1024;
+let htmlCacheChars = 0;
 function cleanHTML(value) {
-  return sanitize(String(value || ""), {
+  const input = String(value || "");
+  if (htmlCache.has(input)) {
+    const cached = htmlCache.get(input);
+    htmlCache.delete(input);
+    htmlCache.set(input, cached);
+    return cached;
+  }
+  const output = sanitize(input, {
     allowedTags: [
       "p",
       "br",
@@ -78,6 +88,20 @@ function cleanHTML(value) {
       }),
     },
   });
+  const size = input.length + output.length;
+  if (size <= MAX_HTML_CACHE_CHARS) {
+    while (
+      htmlCache.size &&
+      (htmlCache.size >= 512 || htmlCacheChars + size > MAX_HTML_CACHE_CHARS)
+    ) {
+      const oldest = htmlCache.keys().next().value;
+      htmlCacheChars -= oldest.length + htmlCache.get(oldest).length;
+      htmlCache.delete(oldest);
+    }
+    htmlCache.set(input, output);
+    htmlCacheChars += size;
+  }
+  return output;
 }
 function normalizeBook(book, freshIds = false) {
   if (
@@ -276,9 +300,20 @@ class Store {
     );
   }
   async readBackup(name) {
-    if (!/^backup-[\w.-]+\.json$/.test(name))
+    return this.readJSON(this.backupPath(name));
+  }
+  backupPath(name) {
+    if (typeof name !== "string" || !/^backup-[\w.-]+\.json$/.test(name))
       throw new Error("Geçersiz yedek adı.");
-    return this.readJSON(path.join(this.backupDir, name));
+    return path.join(this.backupDir, name);
+  }
+  deleteBackup(name) {
+    const result = this.queue.then(async () => {
+      const file = this.backupPath(name);
+      await fs.unlink(file);
+    });
+    this.queue = result.catch(() => {});
+    return result;
   }
   snapshot(input) {
     const result = this.queue.then(async () => {
@@ -343,7 +378,11 @@ class Store {
     let previous;
     try {
       previous = await fs.readFile(this.file);
-      await this.readJSON(this.file);
+      if (previous.equals(Buffer.from(content)))
+        return { savedAt: new Date().toISOString() };
+      if (previous.length > MAX_SIZE)
+        throw new Error("Kitaplık dosyası çok büyük.");
+      validateLibrary(JSON.parse(previous.toString("utf8")));
     } catch (e) {
       if (previous) {
         await fs.writeFile(

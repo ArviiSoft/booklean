@@ -72,10 +72,12 @@ export default function WriterTools({
       ...b,
       writerTools: fn(b.writerTools || { scenes: [], revisions: [] }),
     }));
-  const text =
-    scope === "book"
+  const text = useMemo(() => {
+    if (tool !== "analysis") return "";
+    return scope === "book"
       ? book.chapters.map((c) => plain(c.html)).join("\n")
       : plain(chapter.html);
+  }, [tool, scope, book.chapters, chapter.html]);
   const analysis = useMemo(() => {
     const tokens =
       text

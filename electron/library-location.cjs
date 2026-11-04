@@ -80,6 +80,9 @@ class LibraryLocation {
   readBackup(name) {
     return this.run(() => this.current.readBackup(name));
   }
+  deleteBackup(name) {
+    return this.run(() => this.current.deleteBackup(name));
+  }
   snapshot(data) {
     return this.run(() => this.current.snapshot(data));
   }

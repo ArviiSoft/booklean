@@ -125,6 +125,7 @@ else {
     handle("backup:list", () => store.listBackups());
     handle("backup:create", (data) => store.snapshot(data));
     handle("backup:read", (name) => store.readBackup(name));
+    handle("backup:delete", (name) => store.deleteBackup(name));
     handle("data:open", async () => {
       const error = await shell.openPath(store.dir);
       if (error) throw new Error(error);

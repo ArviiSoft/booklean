@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
@@ -30,7 +30,7 @@ import {
   Subscript,
   ParagraphLayout,
 } from "../editorExtensions";
-import { fmt, words } from "../model";
+import { fmt, chapterWords } from "../model";
 import EditorToolbar, { Tool } from "./EditorToolbar";
 import { Modal, Field } from "./UI";
 export default function WritingCanvas({
@@ -59,6 +59,7 @@ export default function WritingCanvas({
   const savedSelection = useRef<{ from: number; to: number } | null>(null);
   const editor = useEditor(
     {
+      shouldRerenderOnTransaction: false,
       extensions: [
         StarterKit.configure({
           link: { openOnClick: false },
@@ -113,8 +114,14 @@ export default function WritingCanvas({
       }),
     );
   }, [editor, query, matchIndex, search]);
+  const doc = editor?.state.doc;
+  const matches = useMemo(
+    () => (doc && search ? findMatches(doc, query) : []),
+    [doc, query, search],
+  );
+  const characters = useMemo(() => doc?.textContent.length || 0, [doc]);
   if (!editor) return null;
-  const matches = findMatches(editor.state.doc, query);
+  const count = chapterWords(chapter);
   const currentIndex = matches.length
     ? Math.min(matchIndex, matches.length - 1)
     : 0;
@@ -294,10 +301,10 @@ export default function WritingCanvas({
           <span className="status-dot" />{" "}
           {selectedWords
             ? `${fmt(selectedWords)} kelime seçili`
-            : `${fmt(words(chapter.html))} kelime`}
+            : `${fmt(count)} kelime`}
           <i>·</i>
-          {fmt(editor.state.doc.textContent.length)} karakter<i>·</i>
-          {Math.max(1, Math.ceil(words(chapter.html) / 200))} dk okuma
+          {fmt(characters)} karakter<i>·</i>
+          {Math.max(1, Math.ceil(count / 200))} dk okuma
         </span>
         <span>
           Türkçe <i>·</i> {preferences.fontSize} px <i>·</i>{" "}

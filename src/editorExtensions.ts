@@ -80,12 +80,19 @@ export const Footnote = Mark.create({
   },
 });
 export const searchKey = new PluginKey("booklean-search");
+const matchCache = new WeakMap<
+  Node,
+  { query: string; matches: { from: number; to: number }[] }
+>();
 export function findMatches(
   doc: Node,
   query: string,
 ): { from: number; to: number }[] {
   const matches: { from: number; to: number }[] = [];
   if (!query) return matches;
+  const cached = matchCache.get(doc);
+  if (cached?.query === query) return cached.matches;
+  const needle = query.toLocaleLowerCase("tr");
   doc.descendants((node, pos) => {
     if (!node.isTextblock) return true;
     let content = "";
@@ -101,8 +108,7 @@ export function findMatches(
         content += " ";
       }
     });
-    const haystack = content.toLocaleLowerCase("tr"),
-      needle = query.toLocaleLowerCase("tr");
+    const haystack = content.toLocaleLowerCase("tr");
     let at = 0;
     while ((at = haystack.indexOf(needle, at)) !== -1) {
       matches.push({
@@ -113,6 +119,7 @@ export function findMatches(
     }
     return false;
   });
+  matchCache.set(doc, { query, matches });
   return matches;
 }
 export const SearchHighlight = Extension.create({
@@ -122,25 +129,35 @@ export const SearchHighlight = Extension.create({
       new Plugin({
         key: searchKey,
         state: {
-          init: () => ({ query: "", index: 0 }),
+          init: () => ({
+            query: "",
+            index: 0,
+            decorations: DecorationSet.empty,
+          }),
           apply(tr, prev) {
-            return tr.getMeta(searchKey) || prev;
+            const update = tr.getMeta(searchKey);
+            if (!tr.docChanged && !update) return prev;
+            const { query, index } = update || prev;
+            return {
+              query,
+              index,
+              decorations: query
+                ? DecorationSet.create(
+                    tr.doc,
+                    findMatches(tr.doc, query).map((m, i) =>
+                      Decoration.inline(m.from, m.to, {
+                        class:
+                          i === index ? "search-match current" : "search-match",
+                      }),
+                    ),
+                  )
+                : DecorationSet.empty,
+            };
           },
         },
         props: {
           decorations(state) {
-            const current = searchKey.getState(state);
-            return DecorationSet.create(
-              state.doc,
-              findMatches(state.doc, current.query).map((m, i) =>
-                Decoration.inline(m.from, m.to, {
-                  class:
-                    i === current.index
-                      ? "search-match current"
-                      : "search-match",
-                }),
-              ),
-            );
+            return searchKey.getState(state).decorations;
           },
         },
       }),

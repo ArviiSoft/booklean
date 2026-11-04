@@ -194,6 +194,7 @@ declare global {
         library: Library,
       ) => Promise<{ name: string; date: string }>;
       readBackup: (name: string) => Promise<Library>;
+      deleteBackup: (name: string) => Promise<void>;
       minimize: () => void;
       maximize: () => void;
       close: () => void;

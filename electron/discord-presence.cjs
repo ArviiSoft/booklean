@@ -58,14 +58,14 @@ function activityFor(context, start) {
   return {
     type: 0,
     details: context
-      ? cleanText(context.bookTitle, "🔖 Adsız kitap")
+      ? cleanText(`📕 "${context.bookTitle}" kitabını yazıyor`, "🔖 İsimsiz bir kitap hazırlıyor")
       : "📚 Kitaplıkta",
     state: context
       ? cleanText(
-          `${chapterNumber(context.chapterNumber)} Bölüm: ${context.chapterTitle || "🔖 Adsız bölüm"}`,
+          `✍️ ${chapterNumber(context.chapterNumber)}. BÖLÜM: ${context.chapterTitle || "🔖 Adsız bölüm"}`,
           "📝 Yazıyor...",
         )
-      : "Yeni bir hikâye hazırlıyor ✍️",
+      : "Yeni bir hikâye hazırlıyor 📖",
     timestamps: { start },
   };
 }

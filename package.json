@@ -1,13 +1,9 @@
 {
   "name": "booklean",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "private": true,
   "description": "Romanınız için sakin bir çalışma odası.",
   "author": "Booklean",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ArviiSoft/booklean.git"
-  },
   "main": "electron/main.cjs",
   "scripts": {
     "dev": "node scripts/dev.cjs",
@@ -46,6 +42,9 @@
     "@vitejs/plugin-react": "^6.1.2",
     "electron": "^40.0.0",
     "electron-builder": "^26.0.12",
+    "playwright": "^1.55.0",
+    "pngjs": "^7.0.0",
+    "prettier": "^3.9.10",
     "typescript": "^7.0.2",
     "vite": "^8.3.5"
   },

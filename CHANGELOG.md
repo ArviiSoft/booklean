@@ -33,5 +33,16 @@ Format [Keep a Changelog](https://keepachangelog.com/tr-TR/1.0.0/) standardına 
 
 ---
 
+## [v1.4.1] - 04.11.2026
+
+- Uygulama genelinde performans iyileştirmeleri yapıldı. Yazarken, kitaplıkta gezinirken ve ayarları değiştirirken değişmeyen bölümlerin kelimelerinin tekrar sayılması önlendi, özellikle uzun kitaplarda yavaşlama ve takılmalar azaltıldı.
+- **Yazı analizi** yalnızca panel açıkken çalışacak şekilde düzenlendi. Panel kapalıyken kitabın tamamının gereksiz yere analiz edilmesi önlendi.
+- Bölümde **Bul ve değiştir** ile **Wiki** aramaları hızlandırıldı. Değişmeyen metinlerin ve arama sonuçlarının tekrar işlenmesi azaltıldı.
+- **Otomatik kayıt**, **Ctrl+S** ve uygulama kapanışındaki kayıt istekleri iyileştirildi. Aynı verinin tekrar tekrar kaydedilmesi önlendi, kayıt sırasında yapılan son değişiklikler de diske yazılmadan uygulamanın kapanmaması sağlandı.
+- **Ayarlar > Son yedekler** bölümünde **Geri yükle** butonunun yanına **Yedeği Sil** eklendi. Seçilen yedek tek tıkla kalıcı olarak silinebilir.
+
+---
+
 [v1.3.0]: https://github.com/ArviiSoft/booklean/releases/tag/v1.3.0
 [v1.4.0]: https://github.com/ArviiSoft/booklean/releases/tag/v1.4.0
+[v1.4.1]: https://github.com/ArviiSoft/booklean/releases/tag/v1.4.1

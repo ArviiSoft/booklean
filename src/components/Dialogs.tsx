@@ -10,6 +10,7 @@ import {
   HardDrive,
   Check,
   LoaderCircle,
+  Trash2,
 } from "lucide-react";
 import type { Book, ExportFormat, Library, DiscordStatus } from "../types";
 import { version } from "../../package.json";
@@ -271,6 +272,8 @@ export function SettingsDialog({
   const [busy, setBusy] = useState(false);
   const [moving, setMoving] = useState(false);
   const [backingUp, setBackingUp] = useState(false);
+  const [deletingBackup, setDeletingBackup] = useState<string | null>(null);
+  const storageBusy = moving || busy || backingUp || deletingBackup !== null;
   const [discordStatus, setDiscordStatus] = useState<DiscordStatus>("waiting");
   useEffect(() => {
     window.booklean
@@ -332,11 +335,25 @@ export function SettingsDialog({
       setBackingUp(false);
     }
   }
+  async function deleteBackup(name: string) {
+    if (storageBusy) return;
+    setDeletingBackup(name);
+    try {
+      await window.booklean.deleteBackup(name);
+      setBackups((items) => items.filter((item) => item.name !== name));
+      setConfirm((selected) => (selected === name ? null : selected));
+      notify("Yedek silindi.");
+    } catch (error) {
+      notify("Yedek silinemedi: " + String(error));
+    } finally {
+      setDeletingBackup(null);
+    }
+  }
   return (
     <Modal
       title="Tercihler ve Yedekler"
       onClose={() => {
-        if (!moving && !busy && !backingUp) onClose();
+        if (!storageBusy) onClose();
       }}
     >
       <div className="dialog-body settings-body">
@@ -455,7 +472,7 @@ export function SettingsDialog({
           <span>Kitaplık ve yedekler seçtiğiniz klasörde saklanır.</span>
           <button
             className="button secondary"
-            disabled={moving || busy || backingUp}
+            disabled={storageBusy}
             onClick={changeFolder}
           >
             {moving ? (
@@ -472,7 +489,7 @@ export function SettingsDialog({
           </h3>
           <button
             className="button primary"
-            disabled={moving || busy || backingUp}
+            disabled={storageBusy}
             onClick={createBackup}
           >
             {backingUp ? (
@@ -488,12 +505,27 @@ export function SettingsDialog({
             backups.map((b) => (
               <div key={b.name}>
                 <span>{new Date(b.date).toLocaleString("tr-TR")}</span>
-                <button
-                  disabled={moving || busy || backingUp}
-                  onClick={() => setConfirm(b.name)}
-                >
-                  <RotateCcw size={13} /> Geri yükle
-                </button>
+                <div className="backup-actions">
+                  <button
+                    disabled={storageBusy}
+                    onClick={() => setConfirm(b.name)}
+                  >
+                    <RotateCcw size={13} /> Geri yükle
+                  </button>
+                  <button
+                    className="backup-delete"
+                    disabled={storageBusy}
+                    title="Bu yedeği kalıcı olarak sil"
+                    onClick={() => deleteBackup(b.name)}
+                  >
+                    {deletingBackup === b.name ? (
+                      <LoaderCircle size={13} className="spin" />
+                    ) : (
+                      <Trash2 size={13} />
+                    )}
+                    {deletingBackup === b.name ? "Siliniyor…" : "Yedeği Sil"}
+                  </button>
+                </div>
               </div>
             ))
           ) : (
@@ -515,7 +547,7 @@ export function SettingsDialog({
               </button>
               <button
                 className="button primary"
-                disabled={busy || moving || backingUp}
+                disabled={storageBusy}
                 onClick={restore}
               >
                 Yedeği geri yükle
