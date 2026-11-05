@@ -43,6 +43,19 @@ Format [Keep a Changelog](https://keepachangelog.com/tr-TR/1.0.0/) standardına 
 
 ---
 
+## [v1.4.2] - 06.11.2026
+
+- **Karakterler**, Hikâye araçları menüsünden kaldırılarak **dinamik ada**ya taşındı.
+- Karakter oluşturma ve düzenleme formuna zihinsel, duygusal, fiziksel, sosyal ve iradeyle ilgili **42 isteğe bağlı sayısal özellik** eklendi. Zekâ, duygusallık, güç, hırs, empati, cesaret ve diğer özellikler **0-100 arasında tam sayı** girilerek belirlenebilir. Boş bırakılan özellikler değerlendirilmez, toplamın 100 olması gerekmez.
+- Karakter formunun ve karakter panelinin altına **Özellik cetveli** eklendi. Girilen değerlere göre baskın özellikler anlık olarak gösterilir, eşit en yüksek değerler birlikte belirtilir. Paneldeki karakter seçimiyle farklı karakterlerin cetvelleri incelenebilir.
+- Cetvele **eğilim çubukları** eklendi. Mantık-duygusallık, cesaret-temkin, empati-bencillik, sabır-dürtüsellik, dürüstlük-manipülasyon ve sosyallik-bağımsızlık çiftlerinde girilen iki değerin oranına göre hangi tarafın ağır bastığı gösterilir.
+- Sayısal özelliklerin kayıt, yeniden açılış, yedekleme ve **Booklean içe/dışa aktarımı** sırasında korunması sağlandı. Boş bırakılan alanlarla sıfır değeri ayrı tutulur, mevcut karakterler sayısal özellik eklenmeden de kullanılabilir.
+- Karakter formu açıkken **Ctrl+S** kısayolunun formdaki değişiklikleri kaydetmeden başarı bildirimi vermesi düzeltildi. Kısayol artık karakter formunu doğrulayıp kaydeder.
+- Geçersiz veya tamamlanmamış sayı girişlerine alan üzerinde hata işareti ve açıklama eklendi. Aralık dışındaki ve ondalıklı değerlerin kaydedilmesi engellenir.
+
+---
+
 [v1.3.0]: https://github.com/ArviiSoft/booklean/releases/tag/v1.3.0
 [v1.4.0]: https://github.com/ArviiSoft/booklean/releases/tag/v1.4.0
 [v1.4.1]: https://github.com/ArviiSoft/booklean/releases/tag/v1.4.1
+[v1.4.2]: https://github.com/ArviiSoft/booklean/releases/tag/v1.4.2

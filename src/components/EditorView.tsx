@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DOMPurify from "dompurify";
 import {
   ArrowLeft,
@@ -46,6 +46,10 @@ import useSortableList, { reorderItems } from "./useSortableList";
 import WikiView from "./WikiView";
 import CalendarView from "./CalendarView";
 import { defaultCalendar, periodLabel } from "../calendar";
+import {
+  CharacterAttributeFields,
+  CharacterProfile,
+} from "./CharacterAttributes";
 export default function EditorView({
   book,
   preferences,
@@ -83,6 +87,13 @@ export default function EditorView({
   const [panel, setPanel] = useState<"notes" | "characters" | null>(null);
   const [preview, setPreview] = useState(false);
   const [character, setCharacter] = useState<Character | null>(null);
+  const characterFormRef = useRef<HTMLFormElement>(null);
+  const [profileCharacterId, setProfileCharacterId] = useState<string | null>(
+    null,
+  );
+  const profileCharacter =
+    book.characters.find((c) => c.id === profileCharacterId) ||
+    book.characters[0];
   const [characterMenu, setCharacterMenu] = useState<{
     id: string;
     anchor: HTMLElement;
@@ -215,7 +226,20 @@ export default function EditorView({
     setChapterMenu(null);
   }
   return (
-    <div className={`editor-layout ${focus ? "focus-mode" : ""}`}>
+    <div
+      className={`editor-layout ${focus ? "focus-mode" : ""}`}
+      onKeyDownCapture={(event) => {
+        if (
+          character &&
+          (event.ctrlKey || event.metaKey) &&
+          event.key.toLowerCase() === "s"
+        ) {
+          event.preventDefault();
+          event.stopPropagation();
+          characterFormRef.current?.requestSubmit();
+        }
+      }}
+    >
       <header className="editor-topbar">
         <div className="editor-location">
           <button
@@ -471,19 +495,6 @@ export default function EditorView({
                     <StickyNote size={16} />
                     Hikâye notları
                   </button>
-                  <button
-                    className={
-                      panel === "characters"
-                        ? "sidebar-action active"
-                        : "sidebar-action"
-                    }
-                    onClick={() =>
-                      setPanel(panel === "characters" ? null : "characters")
-                    }
-                  >
-                    <Users size={16} />
-                    Karakterler <small>{book.characters.length || ""}</small>
-                  </button>
                   <div className="sidebar-divider" />
                   {(
                     [
@@ -550,7 +561,12 @@ export default function EditorView({
           />
         </main>
         {panel && !focus && (
-          <aside className="notes-panel">
+          <aside
+            className={
+              "notes-panel" +
+              (panel === "characters" ? " characters-panel" : "")
+            }
+          >
             <header>
               <h3>{panel === "notes" ? "Hikâye notları" : "Karakterler"}</h3>
               <button
@@ -623,7 +639,10 @@ export default function EditorView({
                       <button
                         className="character-open"
                         aria-label={`${c.name} karakterini düzenle`}
-                        onClick={() => setCharacter({ ...c })}
+                        onClick={() => {
+                          setProfileCharacterId(c.id);
+                          setCharacter({ ...c });
+                        }}
                       >
                         <span className={`character-avatar avatar-${i % 4}`}>
                           {c.image ? (
@@ -666,6 +685,7 @@ export default function EditorView({
                         >
                           <button
                             onClick={() => {
+                              setProfileCharacterId(c.id);
                               setCharacter({ ...c });
                               setCharacterMenu(null);
                             }}
@@ -707,6 +727,26 @@ export default function EditorView({
                       <br />
                       anlatacak bir hikâyesi var.
                     </p>
+                  </div>
+                )}
+                {profileCharacter && (
+                  <div className="character-panel-profile">
+                    <Field label="Cetvelde gösterilen karakter">
+                      <select
+                        value={profileCharacter.id}
+                        onChange={(e) => setProfileCharacterId(e.target.value)}
+                      >
+                        {book.characters.map((c) => (
+                          <option key={c.id} value={c.id}>
+                            {c.name}
+                          </option>
+                        ))}
+                      </select>
+                    </Field>
+                    <CharacterProfile
+                      attributes={profileCharacter.attributes}
+                      compact
+                    />
                   </div>
                 )}
               </>
@@ -779,8 +819,31 @@ export default function EditorView({
               id: "write",
               label: "Yazı odası",
               icon: BookOpen,
-              active: workspace === "write",
-              onClick: () => setWorkspace("write"),
+              active:
+                workspace === "write" && (panel !== "characters" || preview),
+              onClick: () => {
+                setWorkspace("write");
+                setPanel(null);
+                setCharacterMenu(null);
+              },
+            },
+            {
+              id: "characters",
+              label: "Karakterler",
+              icon: Users,
+              active:
+                workspace === "write" && panel === "characters" && !preview,
+              count: book.characters.length,
+              onClick: () => {
+                setWorkspace("write");
+                setPreview(false);
+                setPanel(
+                  workspace === "write" && panel === "characters" && !preview
+                    ? null
+                    : "characters",
+                );
+                setCharacterMenu(null);
+              },
             },
             {
               id: "wiki",
@@ -788,7 +851,11 @@ export default function EditorView({
               icon: Globe2,
               active: workspace === "wiki",
               count: book.wiki?.length || 0,
-              onClick: () => setWorkspace("wiki"),
+              onClick: () => {
+                setWorkspace("wiki");
+                setPanel(null);
+                setCharacterMenu(null);
+              },
             },
             {
               id: "calendar",
@@ -796,7 +863,11 @@ export default function EditorView({
               icon: CalendarDays,
               active: workspace === "calendar",
               count: book.events?.length || 0,
-              onClick: () => setWorkspace("calendar"),
+              onClick: () => {
+                setWorkspace("calendar");
+                setPanel(null);
+                setCharacterMenu(null);
+              },
             },
           ]}
         />
@@ -809,8 +880,10 @@ export default function EditorView({
           onClose={() => setCharacter(null)}
         >
           <form
+            ref={characterFormRef}
             onSubmit={(e) => {
               e.preventDefault();
+              if (!character.name.trim() || imageBusy) return;
               onUpdate((b) => ({
                 ...b,
                 characters: b.characters.some((c) => c.id === character.id)
@@ -819,6 +892,8 @@ export default function EditorView({
                     )
                   : [...b.characters, character],
               }));
+              onSave();
+              setProfileCharacterId(character.id);
               setCharacter(null);
             }}
           >
@@ -973,6 +1048,13 @@ export default function EditorView({
                   }
                 />
               </Field>
+              <CharacterAttributeFields
+                value={character.attributes}
+                onChange={(attributes) =>
+                  setCharacter({ ...character, attributes })
+                }
+              />
+              <CharacterProfile attributes={character.attributes} />
             </div>
             <footer className="modal-footer">
               <div className="button-row">

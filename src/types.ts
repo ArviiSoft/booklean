@@ -81,6 +81,7 @@ export type StoryEvent = {
   characterIds: string[];
   wikiIds: string[];
 };
+export type CharacterAttributes = Partial<Record<string, number>>;
 export type Character = {
   id: string;
   name: string;
@@ -95,6 +96,7 @@ export type Character = {
   eyeColor?: string;
   skinColor?: string;
   image?: string;
+  attributes?: CharacterAttributes;
 };
 export type Book = {
   id: string;

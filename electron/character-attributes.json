@@ -1,0 +1,79 @@
+{
+  "groups": [
+    {
+      "label": "Zihinsel özellikler",
+      "traits": [
+        { "id": "intelligence", "label": "Zekâ" },
+        { "id": "logic", "label": "Mantık" },
+        { "id": "creativity", "label": "Yaratıcılık" },
+        { "id": "wisdom", "label": "Bilgelik" },
+        { "id": "perception", "label": "Algı" },
+        { "id": "memory", "label": "Hafıza" },
+        { "id": "curiosity", "label": "Merak" },
+        { "id": "focus", "label": "Odaklanma" }
+      ]
+    },
+    {
+      "label": "Duygusal özellikler",
+      "traits": [
+        { "id": "emotionality", "label": "Duygusallık" },
+        { "id": "empathy", "label": "Empati" },
+        { "id": "compassion", "label": "Merhamet" },
+        { "id": "patience", "label": "Sabır" },
+        { "id": "composure", "label": "Soğukkanlılık" },
+        { "id": "sensitivity", "label": "Hassasiyet" },
+        { "id": "optimism", "label": "İyimserlik" },
+        { "id": "resilience", "label": "Duygusal dayanıklılık" },
+        { "id": "jealousy", "label": "Kıskançlık" },
+        { "id": "anger", "label": "Öfke" }
+      ]
+    },
+    {
+      "label": "Fiziksel yetiler",
+      "traits": [
+        { "id": "strength", "label": "Güç" },
+        { "id": "endurance", "label": "Dayanıklılık" },
+        { "id": "agility", "label": "Çeviklik" },
+        { "id": "reflexes", "label": "Refleks" },
+        { "id": "coordination", "label": "Koordinasyon" },
+        { "id": "vitality", "label": "Canlılık" }
+      ]
+    },
+    {
+      "label": "Sosyal özellikler ve değerler",
+      "traits": [
+        { "id": "charisma", "label": "Karizma" },
+        { "id": "leadership", "label": "Liderlik" },
+        { "id": "persuasion", "label": "İkna" },
+        { "id": "sociability", "label": "Sosyallik" },
+        { "id": "honesty", "label": "Dürüstlük" },
+        { "id": "loyalty", "label": "Sadakat" },
+        { "id": "trust", "label": "Güven" },
+        { "id": "manipulation", "label": "Manipülasyon" },
+        { "id": "generosity", "label": "Cömertlik" },
+        { "id": "humility", "label": "Alçakgönüllülük" }
+      ]
+    },
+    {
+      "label": "İrade ve dürtüler",
+      "traits": [
+        { "id": "ambition", "label": "Hırs" },
+        { "id": "courage", "label": "Cesaret" },
+        { "id": "caution", "label": "Temkin" },
+        { "id": "discipline", "label": "Disiplin" },
+        { "id": "determination", "label": "Kararlılık" },
+        { "id": "independence", "label": "Bağımsızlık" },
+        { "id": "selfInterest", "label": "Bencillik" },
+        { "id": "impulsivity", "label": "Dürtüsellik" }
+      ]
+    }
+  ],
+  "axes": [
+    { "left": "logic", "right": "emotionality" },
+    { "left": "courage", "right": "caution" },
+    { "left": "empathy", "right": "selfInterest" },
+    { "left": "patience", "right": "impulsivity" },
+    { "left": "honesty", "right": "manipulation" },
+    { "left": "sociability", "right": "independence" }
+  ]
+}

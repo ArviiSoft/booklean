@@ -627,9 +627,11 @@ export function HelpDialog({ onClose }: { onClose: () => void }) {
         </p>
         <p className="muted">
           Odak modu kenar panellerini gizler. Önizleme açık bölümden başlar;
-          alttaki bölüm seçimiyle kitabınızda gezinebilirsiniz. Hedef, notlar ve
-          karakter kartları Hikâye araçları menüsünde, kitap ayarları
-          kitaplıktaki kitabın üç nokta menüsünde.
+          alttaki bölüm seçimiyle kitabınızda gezinebilirsiniz. Notlar Hikâye
+          araçları menüsünde, karakter kartları alttaki dinamik adanın
+          Karakterler düğmesinde. Karakterlere isteğe bağlı 0–100 arası özellik
+          değerleri girerek özellik cetvelinde baskın yönlerini görebilirsiniz.
+          Kitap ayarları kitaplıktaki kitabın üç nokta menüsünde.
         </p>
         <h3>Dosyalarınızı getirin.</h3>
         <p className="muted">

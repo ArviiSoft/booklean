@@ -4,6 +4,21 @@ const { randomUUID } = require("node:crypto");
 const sanitize = require("sanitize-html");
 const fonts = require("./fonts.json");
 const { themes, motifs } = require("./appearances.json");
+const characterAttributeIds =
+  require("./character-attributes.json").groups.flatMap((group) =>
+    group.traits.map((trait) => trait.id),
+  );
+function normalizeCharacterAttributes(input) {
+  if (!input || typeof input !== "object" || Array.isArray(input)) return {};
+  return Object.fromEntries(
+    characterAttributeIds.flatMap((key) => {
+      const value = input[key];
+      return typeof value === "number" && Number.isFinite(value)
+        ? [[key, Math.max(0, Math.min(100, Math.round(value)))]]
+        : [];
+    }),
+  );
+}
 const {
   normalizeCalendar,
   normalizePeriod,
@@ -162,6 +177,11 @@ function normalizeBook(book, freshIds = false) {
           traits: str(c.traits, 10000),
           motivation: str(c.motivation, 10000),
           innerConflict: str(c.innerConflict, 10000),
+          ...(c.attributes === undefined
+            ? {}
+            : {
+                attributes: normalizeCharacterAttributes(c.attributes),
+              }),
           height: str(c.height, 100),
           weight: str(c.weight, 100),
           hairColor: str(c.hairColor, 100),

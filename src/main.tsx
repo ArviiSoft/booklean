@@ -5,6 +5,7 @@ import "./styles.css";
 import "./styles-workspace.css";
 import "./styles-world.css";
 import "./styles-studio.css";
+import "./styles-characters.css";
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <App />
